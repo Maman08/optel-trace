@@ -1,6 +1,7 @@
 import time
 from django.utils.deprecation import MiddlewareMixin
 from opentelemetry import metrics
+from opentelemetry.trace import get_current_span
 
 class RequestMonitoringMiddleware(MiddlewareMixin):
     def __init__(self, get_response):
@@ -41,5 +42,8 @@ class RequestMonitoringMiddleware(MiddlewareMixin):
                 "status_code": response.status_code
             }
         )
+        span = get_current_span()
+        trace_id = format(span.get_span_context().trace_id, '032x')
+        print(f"[TRACE_ID] {trace_id} - {request.method} {request.path}")
         
         return response 
