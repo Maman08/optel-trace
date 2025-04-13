@@ -28,4 +28,5 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('auth/', include('accounts.urls')),
     path('health/', health_check, name='health_check'),
+    path('', include('django_prometheus.urls')),
 ]
