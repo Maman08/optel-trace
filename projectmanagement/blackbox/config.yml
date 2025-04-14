@@ -1,0 +1,23 @@
+# modules:
+#   http_2xx:
+#     prober: http
+#     timeout: 5s
+#     http:
+#       valid_status_codes: [200]
+#       method: GET
+#   http_all:
+#     prober: http
+#     timeout: 5s
+#     http:
+#       valid_status_codes: []  # Empty list means all status codes are considered successful
+#       method: GET
+
+
+modules:
+  http_all:
+    prober: http
+    timeout: 5s
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200, 301, 302, 304, 307, 308, 401, 403, 404]
+      method: GET

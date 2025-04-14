@@ -1,4 +1,44 @@
-# In ./prometheus/prometheus.yml
+# # In ./prometheus/prometheus.yml
+# global:
+#   scrape_interval: 15s
+#   evaluation_interval: 15s
+
+# scrape_configs:
+#   - job_name: 'prometheus'
+#     static_configs:
+#       - targets: ['localhost:9090']
+
+#   - job_name: 'django'
+#     static_configs:
+#       - targets: ['django:8000']
+#     metrics_path: '/metrics'
+
+#   - job_name: 'blackbox'
+#     static_configs:
+#       - targets: ['blackbox-exporter:9115']
+  
+#   - job_name: 'http_probe'
+#     metrics_path: /probe
+#     params:
+#       module: [http_all]  # Use the http_all module defined in blackbox.yml
+#     static_configs:
+#       - targets:
+#         - 'http://django:8000/'  # Your Django app
+#         - 'http://django:8000/admin/'  # Django admin
+#         - 'http://django:8000/api/products/'
+#         - 'http://django:8000/api/categories/'
+#         - 'http://django:8000/auth/'
+#         - 'http://django:8000/auth/login/'
+#         # Add more endpoints to monitor
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: blackbox-exporter:9115  
+
+
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
@@ -12,3 +52,35 @@ scrape_configs:
     static_configs:
       - targets: ['django:8000']
     metrics_path: '/metrics'
+
+  - job_name: 'blackbox'
+    static_configs:
+      - targets: ['blackbox-exporter:9115']
+
+  - job_name: 'http_probe'
+    metrics_path: /probe
+    params:
+      module: [http_all]
+    static_configs:
+      - targets:
+        - 'http://django:8000/'
+        - 'http://django:8000/admin/'
+        - 'http://django:8000/api/products/'
+        - 'http://django:8000/api/categories/'
+        - 'http://django:8000/auth/'
+        - 'http://django:8000/auth/login/'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']

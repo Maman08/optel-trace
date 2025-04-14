@@ -15,7 +15,7 @@ from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProces
 
 
 def setup_telemetry():
-    resource = Resource.create({"service.name": "projectmanagement"})
+    resource = Resource.create({"service_name": "projectmanagement"})
     tracer_provider = TracerProvider(resource=resource)
 
     # 👉 Add Console Exporter
@@ -31,7 +31,7 @@ def setup_telemetry():
     meter_provider = MeterProvider(
         metric_readers=[prometheus_reader], resource=resource
     )
-    metrics.set_meter_provider(meter_provider)
+    # metrics.set_meter_provider(meter_provider)
 
     # Instrument
     DjangoInstrumentor().instrument()
