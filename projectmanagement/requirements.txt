@@ -8,7 +8,7 @@ djangorestframework==3.16.0
 djangorestframework_simplejwt==5.5.0
 idna==3.10
 importlib-metadata==6.11.0
-mysql-connector-python==9.2.0
+mysql-connector-python~=8.0
 mysqlclient==2.2.7
 opentelemetry-api==1.21.0
 opentelemetry-exporter-prometheus==0.42b0
@@ -21,6 +21,7 @@ opentelemetry-instrumentation-wsgi==0.42b0
 opentelemetry-sdk==1.21.0
 opentelemetry-semantic-conventions==0.42b0
 opentelemetry-util-http==0.42b0
+opentelemetry-exporter-otlp
 pillow==11.2.1
 prometheus_client==0.21.1
 PyJWT==2.9.0
