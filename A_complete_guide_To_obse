@@ -510,3 +510,105 @@ AMP stores only metrics?	✅ Yes, no logs/traces. Only time-series metrics
 Where to filter logs?	Preferably at app level or OTEL Collector before CloudWatch
 Retention per log group?	✅ Yes, but default is infinite — set it yourself
 Archive to S3?	✅ Export old logs to S3 for cheap, long-term storage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. Logging, Tracing, and Metrics Analysis
+i) Logs
+
+Yes, logs are being stored in multiple locations:
+
+Console output via StreamHandler
+Local log files via RotatingFileHandler (../logs/custom.log)
+AWS CloudWatch in three log groups:
+
+/janitri/django/application - General application logs
+/janitri/django/access - Access logs
+/janitri/django/error - Error logs
+
+
+
+
+The logs use both standard and JSON formatters, with JSON specifically for CloudWatch integration.
+
+ii) Traces
+
+Yes, traces are being collected using OpenTelemetry (OTLP) and exported to AWS X-Ray.
+The configuration shows:
+
+OTLP receiver listening on both gRPC (4317) and HTTP (4318) ports
+Traces are batched and sent to AWS X-Ray
+
+
+
+iii) Metrics
+
+Yes, metrics are being collected from two sources:
+
+OTLP metrics
+Prometheus metrics (from Django)
+
+
+The metrics are exported to:
+
+AWS Prometheus Remote Write endpoint
+AWS CloudWatch via the EMF (Embedded Metric Format) exporter
+
+
+
+Collection Frequency
+
+For Prometheus scraping: 15 seconds explicitly configured in scrape_interval: 15s
+For logs and OTLP data: 1 second batch timeout defined in batch: timeout: 1s
+Django's built-in Prometheus middleware (django_prometheus) is integrated to automatically expose metrics
+
+
+
+
+
+
+
+
+
+
+When shifting from a localhost development environment to production, several key changes are needed:
+Logging Changes for Production
+Regarding your specific question about RotatingFileHandler:
+
