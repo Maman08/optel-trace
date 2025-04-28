@@ -1,0 +1,36 @@
+1. What is Batch processing ? And how it makes things efficients in networks terms
+  
+   Rather than sending every single metric/trace/log one-by-one (which would be extremely inefficient and costly in network terms), batching allows grouping many pieces of telemetry data and pushing them together.
+
+    Think of it like:
+    Instead of sending 1 letter every minute to a post office, you collect 50 letters over 10 minutes and send them in one big package.
+    
+   For example:
+    processors:
+       batch:
+         timeout: 1s
+
+Meaning:
+
+    The batch processor is enabled.
+
+    It will flush (send) the batch every 1 second (timeout: 1s) OR when some internal buffer limit is reached (even if 1 second is not over).
+
+
+Collect data (metrics, traces, logs) coming from receivers like otlp or prometheus.
+
+Buffer these items temporarily in memory.
+
+Condition to send:
+
+    If timeout (1 second) is reached → flush the batch immediately.
+
+    If buffer size (default: around 8MB or certain number of telemetry records) is full → flush earlier.
+
+Send the batch together to exporters (AWS services).
+
+If you removed the batch processor:
+
+    Every single span/metric/log would immediately trigger an exporter call.
+
+    Hundreds of network calls per second = insane network cost + throttling + dropped data + system crash under load.
