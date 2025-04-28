@@ -681,3 +681,54 @@ In the X-Ray console, you can use the search bar
 Enter basic filters like HTTP path or status code
 You don't need to know specific trace IDs
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+What Is Happening with Tracing in Your Application
+When your Django application receives a request (like when someone logs in), the following happens:
+
+Your Django App Creates a Trace:
+
+Your Django app has the OpenTelemetry Python library installed
+This library automatically records information about each request (like the URL, time taken, etc.)
+This creates what we call a "trace" - basically a record of that request
+
+
+The Trace Needs to Go Somewhere:
+
+These traces can't just stay in your application - they need to be sent somewhere to be stored and viewed
+This is where the "OpenTelemetry Collector" comes in (that's the program you're running with the command ./otelcol-contrib)
+
+
+Sending the Traces (This is the part you asked about):
+
+Your Django app takes the trace data and sends it to the collector
+It sends this data using something called "OTLP" (OpenTelemetry Protocol)
+The collector is listening for this data on port 4317 (for gRPC connections) or 4318 (for HTTP connections)
+Think of this like your app making an API call to the collector to say "here's some trace data I collected"
+
+
+The Collector Forwards to AWS:
+
+The collector then reformats this data and sends it to AWS X-Ray
+This is how the trace data gets into AWS where you can view it
