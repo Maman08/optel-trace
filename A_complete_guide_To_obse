@@ -612,3 +612,72 @@ When shifting from a localhost development environment to production, several ke
 Logging Changes for Production
 Regarding your specific question about RotatingFileHandler:
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+How You're Getting Traces Without Writing Code
+
+Automatic Instrumentation: When you set up OpenTelemetry with Django, it automatically adds instrumentation to your application. This creates traces for every HTTP request without you having to write code for it.
+Built-in Integration: The OpenTelemetry SDK (which is already installed in your project based on the logs) hooks into Django's request handling system and automatically:
+
+Generates trace IDs
+Records request/response information
+Measures timing
+
+
+No Manual Code Required: This is the beauty of OpenTelemetry - you get basic tracing "for free" just by installing and configuring the libraries.
+
+Practical Uses for These Traces
+Without searching capabilities, traces have limited value. Here's how to make them useful:
+
+Basic Use - AWS X-Ray Console:
+
+Open the AWS X-Ray console
+You'll see a service map showing your application and its connections
+You can click through to see individual traces
+This gives you visibility into request flows without needing to search
+
+
+Finding Problems:
+
+Filter traces by HTTP status code (like 500 errors)
+Look at the slowest traces to identify performance issues
+Examine traces from a time when users reported problems
+
+
+Simple Search Via Console:
+
+In the X-Ray console, you can use the search bar
+Enter basic filters like HTTP path or status code
+You don't need to know specific trace IDs
+
