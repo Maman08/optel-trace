@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app
+  labels:
+    app: django-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: django-app
+  template:
+    metadata:
+      labels:
+        app: django-app
+    spec:
+      containers:
+      - name: django
+        image: mritunjay08/django-app:v1
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DEBUG
+          value: "True"
+        - name: SECRET_KEY
+          value: "django-insecure-hb5vf*6fa)qxggn-64i(m#=_bll!3^40n1e7-nb34p7-he#&y5"
